@@ -10,9 +10,9 @@ const Dashboard = () => {
 
     const router = useRouter();
 
-    const handleLogout = async () => {
+    const handleLogout = () => {
         try {
-            await axios.get('/api/auth/logout');
+            axios.get('/api/auth/logout');
             router.push('/admin/login');
             alert("You were logged out!")
         } catch (err) {
@@ -23,9 +23,9 @@ const Dashboard = () => {
 
     useEffect(() => {
 
-        const verifyToken = async () => {
+        const verifyToken = () => {
             try {
-                await axios.get('/api/auth/verify-token');
+                axios.get('/api/auth/verify-token');
                 alert("You are ready to get the data!");
                 setVerified(true);
             } catch (error) {
