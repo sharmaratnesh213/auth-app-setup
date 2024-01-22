@@ -13,6 +13,7 @@ export function GET() {
                 httpOnly: true,
                 expires: new Date(0)
             });
+        response.headers.set("Cache-Control", "no-store, max-age=0");
         return response;
     } catch (error) {
         return NextResponse.json({ error: error.message }, { status: 500 });
