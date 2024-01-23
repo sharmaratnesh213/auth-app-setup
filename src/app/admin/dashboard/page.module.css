@@ -1,0 +1,70 @@
+.nav {
+  width: 100vw;
+  height: 3rem;
+  padding: 5px 10% 5px 10%;
+  display: flex;
+  background-color: #f0f0f0;
+  justify-content: center;
+}
+.col1 {
+  display: flex;
+  width: 80%;
+  float: left;
+}
+.col2 {
+  display: flex;
+  width: 20%;
+  float: right;
+}
+.formBtn {
+  border: none;
+  background-color: #74bcff;
+  color: black;
+  outline: none;
+  padding: 3px 10px 2px 10px;
+  margin: 2px 0.5rem 2px 0.5rem;
+  font-size: 22px;
+  text-align: center;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.newsBtn {
+  border: none;
+  background-color: #74bcff;
+  color: black;
+  outline: none;
+  padding: 3px 10px 2px 10px;
+  margin: 2px 0.5rem 2px 0.5rem;
+  font-size: 22px;
+  text-align: center;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.refreshBtn {
+  border: none;
+  background-color: #74bcff;
+  color: black;
+  outline: none;
+  padding: 3px 10px 2px 10px;
+  margin: 2px 0.5rem 2px 0.5rem;
+  font-size: 22px;
+  text-align: center;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.signoutBtn {
+  border: none;
+  background-color: #74bcff;
+  color: black;
+  outline: none;
+  padding: 3px 10px 2px 10px;
+  margin: 2px 0.5rem 2px 0.5rem;
+  font-size: 22px;
+  text-align: center;
+  border-radius: 10px;
+  cursor: pointer;
+}
+.query {
+  margin-left: 2.5rem;
+  padding: 6px 10px 2px 10px;
+}
