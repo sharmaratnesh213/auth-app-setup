@@ -187,6 +187,7 @@ function form() {
                           </div>
                           <Modal
                             isOpen={modalIsOpen}
+                            ariaHideApp={false}
                             onAfterOpen={afterOpenModal}
                             onRequestClose={closeModal}
                             style={customStyles}
