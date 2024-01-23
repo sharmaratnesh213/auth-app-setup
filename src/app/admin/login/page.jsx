@@ -1,7 +1,10 @@
 "use client"
 import React, { useState } from 'react';
+import styles from "./page.module.css"
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import lock from "./../../../../public/assets/login/lock.png"
 
 const Login = () => {
 
@@ -38,19 +41,28 @@ const Login = () => {
     };
 
     return (
-        <div>
-            <h2>Login Page</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Email:</label>
-                    <input type="email" value={email} onChange={handleEmailChange} required />
-                </div>
-                <div>
-                    <label>Password:</label>
-                    <input type="password" value={password} onChange={handlePasswordChange} required />
-                </div>
-                <button type="submit">Login</button>
-            </form>
+        <div className={styles.container}>
+            <Image
+                className={styles.img}
+                src={lock}
+                fill
+                placeholder='blur'
+            />
+            <div className={styles.box}>
+                <div className={styles.compHead}>Company Name/Logo</div>
+                <div className={styles.desc}>Please sign in with admin credentials to proceed.</div>
+                <form className={styles.form} onSubmit={handleSubmit}>
+                    <div className={styles.row}>
+                        <label className={styles.label}>Email:</label>
+                        <input className={styles.input} type="email" value={email} onChange={handleEmailChange} required />
+                    </div>
+                    <div className={styles.row}>
+                        <label className={styles.label}>Password:</label>
+                        <input className={styles.input} type="password" value={password} onChange={handlePasswordChange} required />
+                    </div>
+                    <button className={styles.btn} type="submit">Sign in</button>
+                </form>
+            </div>
         </div>
     );
 };

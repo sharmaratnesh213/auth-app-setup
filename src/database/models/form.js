@@ -20,8 +20,14 @@ const FormSchema = new mongoose.Schema({
     message: {
         type: String,
         required: [true, "Message is required"]
-    }
-});
+    },
+    comment: {
+        type: String,
+        default: "Unchecked"
+    },
+},
+    { timestamps: true }
+);
 
 const Form = mongoose.models.forms || mongoose.model("forms", FormSchema);
 

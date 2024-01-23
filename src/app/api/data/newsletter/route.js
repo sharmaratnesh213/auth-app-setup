@@ -1,5 +1,5 @@
 import connectDB from "@/database/dbConfig";
-import Form from "@/database/models/form";
+import Mail from "@/database/models/mail";
 import { NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 
@@ -17,12 +17,14 @@ export async function GET(request) {
 
         const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
 
-        const forms = await Form.find();
-        return NextResponse.json(forms, { status: 200 });
+        const mails = await Mail.find();
+        return NextResponse.json(mails, { status: 200 });
+
     } catch (error) {
         return NextResponse.json({
             error: error.message
         }, { status: 500 });
+
     }
 }
 
@@ -31,9 +33,9 @@ export async function POST(request) {
         await connectDB();
         const data = await request.json();
         // validateData(data);
-        const contactData = new Form(data);
+        const contactData = new Mail(data);
         await contactData.save();
-        return NextResponse.json({ message: "Your query was sent!" }, { status: 201 });
+        return NextResponse.json({ message: "Your email was registered to newsletter!" }, { status: 201 });
     } catch (error) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
