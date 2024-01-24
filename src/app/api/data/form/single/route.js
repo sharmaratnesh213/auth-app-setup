@@ -32,6 +32,7 @@ export async function PUT(request) {
 }
 
 export async function DELETE(request) {
+    // console.log("hi");
     try {
         await connectDB();
         const token = request.cookies.get('token')?.value || '';
@@ -44,7 +45,10 @@ export async function DELETE(request) {
 
         const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
 
+        console.log("upper")
         const { id } = await request.json();
+        console.log(id);
+        console.log("lower")
         const deletedForm = await Form.findByIdAndDelete(id);
 
         if (!deletedForm) {

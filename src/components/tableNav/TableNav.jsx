@@ -14,7 +14,7 @@ const TableNav = ({ totalPages, currentPage, onPageChange }) => {
     if (startPage < 1) {
         startPage = 1;
     } else if (startPage > totalPages - 2) {
-        startPage = totalPages - 2;
+        startPage = Math.max(1, totalPages - 2);
     }
 
     for (let i = startPage; i <= startPage + 2 && i <= totalPages; i++) {

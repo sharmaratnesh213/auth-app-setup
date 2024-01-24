@@ -29,12 +29,8 @@ const Login = () => {
                 email,
                 password,
             });
-            router.push('/admin/dashboard');
-            // Handle successful login, e.g., store the token in local storage
-            alert('Login successful!')
-            console.log('Login successful', response.data);
+            router.push('/admin/dashboard/form');
         } catch (error) {
-            // Handle login error, e.g., display an error message
             alert('login failed')
             console.error('Login failed', error.response.data);
         }

@@ -10,27 +10,14 @@ const Dashboard = () => {
 
     const router = useRouter();
 
-    const handleLogout = () => {
-        try {
-            axios.get('/api/auth/logout');
-            router.push('/admin/login');
-            alert("You were logged out!")
-        } catch (err) {
-            console.log("Some error occured!")
-            alert("Unable to logout, try after a minute.")
-        }
-    }
-
     useEffect(() => {
 
         const verifyToken = () => {
             try {
                 axios.get('/api/auth/verify-token');
-                alert("You are ready to get the data!");
                 setVerified(true);
             } catch (error) {
                 setVerified(false);
-                // alert(verified);
                 router.push('/admin/login');
             }
         }
@@ -47,7 +34,6 @@ const Dashboard = () => {
         <div>
             Dashboard
             <h1>Welcome Admin!</h1>
-            <button onClick={handleLogout}>Logout</button>
         </div>
     )
 }

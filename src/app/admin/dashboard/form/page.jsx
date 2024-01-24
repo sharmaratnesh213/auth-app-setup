@@ -1,10 +1,11 @@
 "use client";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./form.modules.scss";
 import Link from "next/link";
 import TableNav from "../../../../components/tableNav/TableNav";
-import ReactDOM from "react-dom";
 import Modal from "react-modal";
+import axios from "axios";
+import Loader from "@/components/loader/Loader";
 
 const customStyles = {
   content: {
@@ -18,24 +19,40 @@ const customStyles = {
 };
 
 function form() {
-  // const [data, setData] = useState([]);
+  const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // const { dispatch, isFetchingData } = useContext(Context);
+  const assembleData = async () => {
+    setLoading(true);
+    try {
+      const res = await axios.get("/api/data/form");
+      // console.log(res.data);
+      setData(res.data);
 
-  // useEffect(() => {
-  //   const assembleData = async () => {
-  //     const res1 = await axiosPrivate.get("/api/admin/data");
-  //     setData(res1.data);
+    } catch (err) {
+      console.log(err);
 
-  //     const res2 = await axiosPrivate.get("/api/admin/summary");
-  //     setMetData(res2.data);
-  //   };
+    } finally {
+      setLoading(false);
 
-  //   assembleData();
-  // }, []);
+    }
+  };
 
-  let subtitle;
-  const [modalIsOpen, setIsOpen] = React.useState(false);
+  useEffect(() => {
+    const assembleDataWrapper = async () => {
+      try {
+        await assembleData();
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    assembleDataWrapper();
+
+  }, []);
+
+  // let subtitle;
+  const [modalIsOpen, setIsOpen] = useState(false);
 
   function openModal() {
     setIsOpen(true);
@@ -43,29 +60,12 @@ function form() {
 
   function afterOpenModal() {
     // references are now sync'd and can be accessed.
-    subtitle.style.color = "#f00";
+    // subtitle.style.color = "#f00";
   }
 
   function closeModal() {
     setIsOpen(false);
   }
-
-  const data = [
-    {
-      name: "nitish",
-      email: "nitish@gmail.com",
-      contact: "9879879877",
-      subject: "Unicorn company",
-      comment: "call not picked",
-    },
-    {
-      name: "nitish",
-      email: "nitish@gmail.com",
-      contact: "9879879877",
-      subject: "Unicorn company",
-      comment: "positive",
-    },
-  ];
 
   const [expandedUser, setExpandedUser] = useState(null);
 
@@ -89,13 +89,42 @@ function form() {
   const endIndex = startIndex + itemsPerPage;
   const displayedData = data.slice(startIndex, endIndex);
 
-  // if (isFetchingData) {
-  //   return (
-  //     <center>
-  //       <h1>Loading...</h1>
-  //     </center>
-  //   );
-  // }
+  const [comment, setComment] = useState("");
+
+  const handleChange = (e) => {
+    setComment(e.target.value);
+  }
+
+  const handleSubmit = async (e, id) => {
+    try {
+      e.preventDefault();
+      const res = await axios.put("/api/data/form/single", { id, comment });
+      closeModal();
+      setExpandedUser(null);
+      await assembleData();
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setComment("");
+    }
+  }
+
+  const handleDelete = async (id) => {
+    try {
+      const res = await axios.delete("/api/data/form/single", { data: { id } });
+      setExpandedUser(null);
+      await assembleData();
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  if (loading) {
+    return (
+      <Loader />
+    );
+  }
+
   return (
     <div className="usersList">
       <div className="box1"></div>
@@ -120,7 +149,7 @@ function form() {
                   <td>{startIndex + index + 1}</td>
                   <td>{data.name}</td>
                   <td>{data.email}</td>
-                  <td>{data.contact}</td>
+                  <td>{data.phoneNumber}</td>
                   <td>{data.subject}</td>
                   <td>{data.comment}</td>
                   <td>
@@ -135,10 +164,14 @@ function form() {
                       <div className="expanded">
                         <div className="col1">
                           <div>
-                            <b>Time: </b>
+                            <b>Query Time: </b>
+                            {new Date(data?.createdAt).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' })},
+                            {" "}{new Date(data?.createdAt).toLocaleTimeString()}
                           </div>
                           <div>
-                            <b>Param2: </b>
+                            <b>Update Time: </b>
+                            {new Date(data?.updatedAt).toLocaleDateString(undefined, { day: 'numeric', month: 'short', year: 'numeric' })},
+                            {" "}{new Date(data?.updatedAt).toLocaleTimeString()}
                           </div>
                         </div>
                         <div className="col2">
@@ -148,16 +181,8 @@ function form() {
                           <div>
                             <b>Param4:</b>
                           </div>
-
-                          {/* <
-                            href={{
-                              pathname: "/users/users-profile/singleuser/edit",
-                            }}
-                            state={{
-                              data: data,
-                            }}
-                          > */}
                           <div
+                            onClick={() => handleDelete(data._id)}
                             style={{
                               float: "right",
                               backgroundColor: "red",
@@ -194,18 +219,34 @@ function form() {
                             contentLabel="Example Modal"
                           >
                             <button
-                              style={{ float: "right" }}
+                              style={{
+                                float: "right",
+                                fontSize: "1.4vw",
+                                fontWeight: 600
+                              }}
                               onClick={closeModal}
                             >
                               X
                             </button>
                             <br />
                             <div>Enter Comment</div>
-                            <form>
-                              <input type="text" style={{ width: "300px" }} />
+                            <form onSubmit={(e) => handleSubmit(e, data._id)}>
+                              <input
+                                type="text"
+                                style={{
+                                  width: "300px",
+                                  height: "2vw",
+                                  paddingLeft: '0.5vw',
+                                  border: "none"
+                                }}
+                                placeholder={data?.comment}
+                                autoFocus
+                                value={comment}
+                                onChange={handleChange}
+                              />
                               <br />
                               <br />
-                              <button style={{ float: "right" }}>Save</button>
+                              <button type="submit" style={{ float: "right" }}>Save</button>
                             </form>
                           </Modal>
                         </div>
